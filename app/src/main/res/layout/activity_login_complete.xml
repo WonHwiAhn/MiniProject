@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/activity_login_complete">
+    <Button
+        android:id="@+id/menu_btn01"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/menu"
+        android:visibility="visible"/>
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/study"
+        android:layout_width="100dp"
+        android:layout_height="100dp" />
+
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/icon"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/linearLayout">
+
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/linearLayout2">
+
+                <TextView
+                    android:layout_marginLeft="0dp"
+                    android:id="@+id/dashboard_welcome"
+                    android:text="Welcome, user"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:textColor="#f2f2f2"/>
+
+                <Button
+                    android:layout_marginLeft="20dp"
+                    android:layout_below="@+id/EText01"
+                    android:id="@+id/dashboard_btn_logout"
+                    android:text="Logout"
+                    android:textColor="#000000"
+                    android:background="#f2f2f2"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <Button
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="80dp"
+                android:layout_marginLeft="20dp"
+                android:layout_below="@+id/linearLayout2"
+                android:id="@+id/btn1"
+                android:text="내가 속한 스터디"
+                android:textColor="#000000"
+                android:background="#F2F2F2"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <Button
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_below="@+id/btn1"
+                android:id="@+id/btn2"
+                android:text="스터디 모집"
+                android:textColor="#000000"
+                android:background="#F2F2F2"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <Button
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_below="@+id/btn2"
+                android:id="@+id/btn3"
+                android:text="취업관련 뉴스"
+                android:textColor="#000000"
+                android:background="#F2F2F2"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <!--<android.support.design.widget.TextInputLayout
+        android:layout_below="@+id/dashboard_welcome"
+        android:id="@+id/dashboard_input_new_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/dashboard_new_password"
+            android:hint="Enter new password"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </android.support.design.widget.TextInputLayout>-->
+
+    <!--<Button
+        android:layout_below="@+id/dashboard_input_new_password"
+        android:id="@+id/dashboard_btn_change_pass"
+        android:text="Change Password"
+        android:background="#263238"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />-->
+
+
+    <LinearLayout
+        android:id="@+id/slidingPanel"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#ffffff66"
+        android:layout_gravity="right"
+        android:visibility="gone">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/TView01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="로그인을 해주세요"
+                android:textColor="#ff000000"
+                android:textSize="20dp"/>
+            <Button
+                android:layout_marginLeft="20dp"
+                android:id="@+id/menu_btn02"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/menu"/>
+        </LinearLayout>
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/LView01">
+        </ListView>
+    </LinearLayout>
+</RelativeLayout>
