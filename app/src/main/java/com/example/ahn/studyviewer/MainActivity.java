@@ -8,7 +8,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -44,9 +43,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getWindow().getAttributes().width = WindowManager.LayoutParams.MATCH_PARENT;
+        /*getWindow().getAttributes().width = WindowManager.LayoutParams.MATCH_PARENT;
 
-        getWindow().getAttributes().height = WindowManager.LayoutParams.MATCH_PARENT;
+        getWindow().getAttributes().height = WindowManager.LayoutParams.MATCH_PARENT;*/
+
+
+        /*ActionBar ab = getSupportActionBar();
+        ab.setTitle("");
+        ab.setLogo(R.drawable.menu);*/
 
         //View
         btnLogin = (Button) findViewById(R.id.login_btn_login);
@@ -76,6 +80,21 @@ public class MainActivity extends AppCompatActivity {
         if(auth.getCurrentUser() != null)
             startActivity(new Intent(MainActivity.this, LoginComplete.class));
     }
+
+    /*public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menubutton, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item){
+        int id = item.getItemId();
+
+        if(id==R.id.action_button){
+            Toast.makeText(this, "버튼클릭", Toast.LENGTH_LONG).show();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }*/
 
     Button.OnClickListener listener = new View.OnClickListener() {
         @Override
@@ -143,4 +162,5 @@ public class MainActivity extends AppCompatActivity {
         String deviceId = deviceUuid.toString();
         return deviceId;
     }
+
 }
