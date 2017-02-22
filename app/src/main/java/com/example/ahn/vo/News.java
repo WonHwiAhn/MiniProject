@@ -1,4 +1,4 @@
-package com.example.ahn.studyviewer;
+package com.example.ahn.vo;
 
 /**
  * Created by 고물 on 2017-02-22.
