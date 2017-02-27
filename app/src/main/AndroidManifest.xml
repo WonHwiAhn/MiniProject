@@ -18,9 +18,19 @@
             </intent-filter>
         </activity>
         <activity android:name=".ForgotPassword" />
+
         <activity android:name=".LoginComplete"
                   android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".SignUp" />
-    </application>
 
+        <activity android:name=".SignUp" />
+
+        <activity android:name="com.example.ahn.StudyBoard.BoardMain"
+                  android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity android:name="com.example.ahn.StudyBoard.BoardPopupActivity"
+                  android:theme="@android:style/Theme.Dialog" />
+
+        <activity android:name="com.example.ahn.StudyBoard.BoardMake"
+                  android:theme="@style/AppTheme.NoActionBar"/>
+    </application>
 </manifest>

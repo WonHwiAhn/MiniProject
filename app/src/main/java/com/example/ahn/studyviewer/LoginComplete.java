@@ -59,6 +59,10 @@ public class LoginComplete extends AppCompatActivity implements NavigationView.O
     private TextView navTView01, navTView02;
     /******************************/
 
+    /*******스터디 모집 게시판 변수*******/
+    Button studyRecruitBoardbtn;
+    /*************************************/
+
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_complete);
@@ -100,7 +104,19 @@ public class LoginComplete extends AppCompatActivity implements NavigationView.O
         //btnChangePass.setOnClickListener(listener);
         btnLogout.setOnClickListener(listener);
 
+
+
         auth = FirebaseAuth.getInstance();
+
+        /***********스터디 모집 게시판 부분************/
+        studyRecruitBoardbtn = (Button) findViewById(R.id.btn2);
+        studyRecruitBoardbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(LoginComplete.this, com.example.ahn.StudyBoard.BoardMain.class));
+            }
+        });
+        /**********************************************/
 
         /*****************************슬라이딩 패널부분 ****************************/
         aniRight = AnimationUtils.loadAnimation(this, R.anim.translate_right);
