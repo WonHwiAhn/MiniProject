@@ -42,13 +42,9 @@ public class BoardPopupLtn extends Activity {
         showLtn.setAdapter(adapter);
         showLtn.setOnItemClickListener(onClickListItem);
 
-        //UI 객체생성
-        //txtText = (TextView)findViewById(R.id.txtText);
-
         //데이터 가져오기
         Intent intent = getIntent();
         String data = intent.getStringExtra("data");
-        //txtText.setText(data);
         // 지오코더 객체 생성
         gc = new Geocoder(this, Locale.KOREAN);
     }
@@ -72,7 +68,6 @@ public class BoardPopupLtn extends Activity {
             addressList = gc.getFromLocationName(searchStr, 3);
 
             if (addressList != null) {
-                //adapter.add("\nCount of Addresses for [" + searchStr + "] : " + addressList.size());
                 for (int i = 0; i < addressList.size(); i++) {
                     Address outAddr = addressList.get(i);
                     int addrCount = outAddr.getMaxAddressLineIndex() + 1;
@@ -80,9 +75,6 @@ public class BoardPopupLtn extends Activity {
                     for (int k = 0; k < addrCount; k++) {
                         outAddrStr.append(outAddr.getAddressLine(k));
                     }
-                    //outAddrStr.append("\n\tLatitude : " + outAddr.getLatitude());
-                    //outAddrStr.append("\n\tLongitude : " + outAddr.getLongitude());
-
                     adapter.add(":Address:" + outAddrStr.toString()+ ":Latitude:" +  outAddr.getLatitude() + ":Longitude:" + outAddr.getLongitude());
                 }
             }
@@ -103,8 +95,6 @@ public class BoardPopupLtn extends Activity {
             intent.putExtra("LTN", adapter.getItem(arg2));
             setResult(RESULT_OK, intent);
             finish();
-            // 이벤트 발생 시 해당 아이템 위치의 텍스트를 출력
-            //Toast.makeText(getApplicationContext(), adapter.getItem(arg2), Toast.LENGTH_SHORT).show();
         }
     };
 }

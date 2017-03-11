@@ -42,7 +42,7 @@ public class BoardMake extends AppCompatActivity {
 
     private DatabaseReference root = FirebaseDatabase.getInstance().getReference().child("study");
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+    @RequiresApi(api = Build.VERSION_CODES.N)  // 달력, 시계 API가 최신 버전에서 실행가능함.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.board_make);
@@ -60,7 +60,7 @@ public class BoardMake extends AppCompatActivity {
 
         currentAddress = (TextView) findViewById(R.id.currentAddress);
 
-        GregorianCalendar calendar = new GregorianCalendar();
+        GregorianCalendar calendar = new GregorianCalendar();  // 달력 API 사용하기 위함
 
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH);
@@ -71,33 +71,53 @@ public class BoardMake extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
     }
 
+    /***********************************************************
+     *          스터디 시작 날짜 설정 (Button)                 *
+     ***********************************************************/
     public void calendarStart(View view){
         calendarFlag = true;
         new DatePickerDialog(BoardMake.this, dateSetListener, year, month, day).show();
+        //달력 API 사용
     }
 
+    /***********************************************************
+     *            스터디 끝 날짜 설정 (Button)                 *
+     ***********************************************************/
     public void calendarEnd(View view){
         calendarFlag = false;
         new DatePickerDialog(BoardMake.this, dateSetListener, year, month, day).show();
+        //달력 API사용
     }
 
+    /***********************************************************
+     *          스터디 시작 시간 설정 (Button)                 *
+     ***********************************************************/
     public void timeStart(View view){
         timeFlag = true;
         new TimePickerDialog(this, timeSetListener, 15, 24, true).show();  //false로 하면 오전, 오후 선택할 수 있음
                                                                            //15는 설정시각, 24는 설정분
     }
 
+    /***********************************************************
+     *            스터디 끝 시간 설정 (Button)                 *
+     ***********************************************************/
     public void timeEnd(View view){
         timeFlag = false;
         new TimePickerDialog(this, timeSetListener, 15, 24, true).show();
     }
 
+    /***********************************************************
+     *               스터디 장소 입력 (Button)                 *
+     ***********************************************************/
     public void mapStart(View view){
                 intent = new Intent(getApplicationContext(), BoardPopupMap.class);
                 intent.putExtra("data", "Test Popup");
                 startActivityForResult(intent, 1);
     }
 
+    /***********************************************************
+     *           위의 장소 입력받고 데이터 받는 곳             *
+     ***********************************************************/
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode==RESULT_OK){
             address = data.getExtras().getString("address");
@@ -108,6 +128,9 @@ public class BoardMake extends AppCompatActivity {
         }
     }
 
+    /***********************************************************
+     *                달력 이벤트 처리하는 곳                  *
+     ***********************************************************/
     private DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -122,6 +145,9 @@ public class BoardMake extends AppCompatActivity {
         }
     };
 
+    /***********************************************************
+     *                시계 이벤트 처리하는 곳                  *
+     ***********************************************************/
     private TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -136,6 +162,9 @@ public class BoardMake extends AppCompatActivity {
         }
     };
 
+    /***********************************************************
+     *                스터디 만들기 버튼 (최종)                *
+     ***********************************************************/
     public void btnSubmit(View view){
         BoardMainData bmd = new BoardMainData(studyTitle.getText().toString(), studyMember.getText().toString(), calendarStart.getText().toString(), calendarEnd.getText().toString(), timeStart.getText().toString(), timeEnd.getText().toString(), mobileNumber.getText().toString(), currentAddress.getText().toString(), studyDetail.getText().toString(), longitude, latitude);
         root.push().setValue(bmd);

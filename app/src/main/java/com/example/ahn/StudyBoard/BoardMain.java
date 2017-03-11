@@ -34,10 +34,8 @@ import static com.example.ahn.studyviewer.R.id.fab;
  */
 
 public class BoardMain extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
-
-    //BoardMainAdapter boardMainAdapter;
-    ArrayAdapter<String> boardMainAdapter;
-    ArrayList<String> boardMainData = new ArrayList<>();
+    ArrayAdapter<String> boardMainAdapter;  // Board Title만 표출
+    ArrayList<String> boardMainData = new ArrayList<>();  //Board에 담긴 모든 정보
     DatabaseReference root;
     int count = 0;
 
@@ -45,7 +43,7 @@ public class BoardMain extends AppCompatActivity implements NavigationView.OnNav
         super.onCreate(savedInstanceState);
         setContentView(R.layout.board_main);
 
-        root = FirebaseDatabase.getInstance().getReference().child("study"); //디비 루트 설정 (채팅 방 밑 노드)
+        root = FirebaseDatabase.getInstance().getReference().child("study");
 
         setTitle("스터디 모집 게시판");  //타이틀 바 제목 수정
 
@@ -58,7 +56,7 @@ public class BoardMain extends AppCompatActivity implements NavigationView.OnNav
         addStudy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*팝업으로*/   //////////////////////////////////////////////////////////////////팝업 수정중
+                /*팝업으로*/
                 Intent intent = new Intent(getApplicationContext(), BoardPopupActivity.class);
                 intent.putExtra("data", "Test Popup");
                 startActivityForResult(intent, 1);
@@ -90,24 +88,23 @@ public class BoardMain extends AppCompatActivity implements NavigationView.OnNav
             public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
                 BoardMainData newPost = dataSnapshot.getValue(BoardMainData.class);
 
-                boardMainData.add(count+"  "+ newPost.getStudyTitle());
+                boardMainData.add(count+"  "+ newPost.getStudyTitle());  //Board정보에서 Title data get
                 boardMainAdapter.notifyDataSetChanged();
-                count++;
+                count++;  //게시물 번호 생성하기 위함 Ex) 1,2,3....
             }
-
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {}
-
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {}
-
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {}
-
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         });
 
+        /***********************************************************
+         *           BoardList에서 item 클릭시                     *
+         ***********************************************************/
         boardList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             public void onItemClick(AdapterView<?> parentView, View clickedView, int position, long id)
             {
@@ -119,6 +116,9 @@ public class BoardMain extends AppCompatActivity implements NavigationView.OnNav
         });
     }
 
+    /***********************************************************
+     *           디바이스에서 뒤로가기 버튼 클릭시             *
+     ***********************************************************/
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -129,18 +129,20 @@ public class BoardMain extends AppCompatActivity implements NavigationView.OnNav
         }
     }
 
-        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-            if(requestCode==1){
-                if(resultCode==RESULT_OK){
-                    Intent intent = new Intent(getApplicationContext(), BoardMake.class);
-                    startActivity(intent);
-                    //데이터 받기
-                    String result = data.getStringExtra("result");
-                    //txtResult.setText(result);
-                    finish();
-                }
+    /***********************************************************
+     *           게시판 생성시 Intent (BoardMake.class)        *
+     ***********************************************************/
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode==1){
+            if(resultCode==RESULT_OK){
+                Intent intent = new Intent(getApplicationContext(), BoardMake.class);
+                startActivity(intent);
+                //데이터 받기
+                String result = data.getStringExtra("result");
+                finish();
             }
         }
+    }
 
 
     @Override
@@ -150,6 +152,9 @@ public class BoardMain extends AppCompatActivity implements NavigationView.OnNav
         return true;
     }
 
+    /***********************************************************
+     *           디바이스에서 뒤로가기 버튼 클릭시             *
+     ***********************************************************/
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will

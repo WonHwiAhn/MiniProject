@@ -20,13 +20,9 @@ public class BoardPopupActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.board_main_popup);
 
-        //UI 객체생성
-        //txtText = (TextView)findViewById(R.id.txtText);
-
         //데이터 가져오기
         Intent intent = getIntent();
         String data = intent.getStringExtra("data");
-        //txtText.setText(data);
     }
 
     //확인 버튼 클릭

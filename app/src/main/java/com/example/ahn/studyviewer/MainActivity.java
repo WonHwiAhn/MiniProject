@@ -43,15 +43,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /*getWindow().getAttributes().width = WindowManager.LayoutParams.MATCH_PARENT;
-
-        getWindow().getAttributes().height = WindowManager.LayoutParams.MATCH_PARENT;*/
-
-
-        /*ActionBar ab = getSupportActionBar();
-        ab.setTitle("");
-        ab.setLogo(R.drawable.menu);*/
-
         //View
         btnLogin = (Button) findViewById(R.id.login_btn_login);
         input_email = (EditText) findViewById(R.id.login_email);
@@ -81,21 +72,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(MainActivity.this, LoginComplete.class));
     }
 
-    /*public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menubutton, menu);
-        return true;
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item){
-        int id = item.getItemId();
-
-        if(id==R.id.action_button){
-            Toast.makeText(this, "버튼클릭", Toast.LENGTH_LONG).show();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }*/
-
     Button.OnClickListener listener = new View.OnClickListener() {
         @Override
         public void onClick(View view){
@@ -110,18 +86,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
-
-    /*public void onClick(View view){
-        if(view.getId() == R.id.login_btn_forgot_password){
-            startActivity(new Intent(MainActivity.this, ForgotPassword.class));
-            finish();
-        }else if(view.getId() == R.id.login_btn_signup){
-            startActivity(new Intent(MainActivity.this, SignUp.class));
-            finish();
-        }else if(view.getId() == R.id.login_btn_login){
-            loginUser(input_email.getText().toString(), input_password.getText().toString());
-        }
-    }*/
 
     private void loginUser(String email, final String password){
         auth.signInWithEmailAndPassword(email, password)

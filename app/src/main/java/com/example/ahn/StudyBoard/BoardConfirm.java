@@ -55,6 +55,9 @@ public class BoardConfirm extends AppCompatActivity{
 
         root.addValueEventListener(new ValueEventListener() {
             @Override
+            /***********************************************************
+             *           study밑의 데이터를 활용하는 곳                *
+             ***********************************************************/
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d(TAG, "@@@@@@@@@@@@@" + studyTitles[2]);
                 for (DataSnapshot studyData : dataSnapshot.getChildren()) {
@@ -90,18 +93,23 @@ public class BoardConfirm extends AppCompatActivity{
             }
         });
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();  // 현재 로그인한 유저의 데이터를 가져오기 위함
         if (user != null) {
-            currentUserEmail = user.getEmail();
-            currentUserUid = user.getUid();
+            currentUserEmail = user.getEmail(); // 현재 로그인한 유저의 이메일 받아오는 곳
+            currentUserUid = user.getUid();  // 현재 로그인한 유저의 UID값 받아오는 곳
         }
     }
+
+    /***********************************************************
+     *           내 스터디로 등록하는 버튼 클릭시              *
+     ***********************************************************/
     public void registerMyStudyBtn(View view){
         root1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(root1.child(studyTitles[2]).equals("")){
                     Map<String, Object> map = new HashMap<String, Object>();
+                    //HashMap으로 값을 넣으면 Key값이 생성되지않고 바로 들어가기 때문에 HashMap으로 데이터 저장
                     map.put(studyTitles[2], "");
                     root1.updateChildren(map);
                 }
@@ -113,7 +121,10 @@ public class BoardConfirm extends AppCompatActivity{
             }
         });
 
-        if(!(root1.child(studyTitles[2]).equals(currentUserUid))) {
+        /************************************************************************
+         *그룹에 이미 유저가 저장 되있는 경우 데이터를 또 넣지 않게 하기 위한 곳*
+         ************************************************************************/
+        if(!(root1.child(studyTitles[2]).equals(currentUserUid))) { // 유저의 UID값을 비교
             Map<String, Object> groupUserMap = new HashMap<String, Object>();
             groupUserMap.put(currentUserUid,currentUserEmail);
             root1.child(studyTitles[2]).updateChildren(groupUserMap);

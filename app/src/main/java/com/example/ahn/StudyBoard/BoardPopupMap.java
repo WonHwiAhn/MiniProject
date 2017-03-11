@@ -42,14 +42,11 @@ public class BoardPopupMap extends Activity implements
     private static final String TAG = "@@@";
     private GoogleApiClient mGoogleApiClient = null;
     private LocationRequest mLocationRequest;
-    private static final int REQUEST_CODE_LOCATION = 2000;//임의의 정수로 정의
-    private static final int REQUEST_CODE_GPS = 2001;//임의의 정수로 정의
     private GoogleMap googleMap;
     private LocationManager locationManager;
     private MapFragment mapFragment;
     boolean setGPS = false;
     private LatLng SEOUL = new LatLng(37.56, 126.97);
-    private Button btnLtn, btnMove, btnInputData;
     private Intent intent;
     private String LTN, address;
     private double latitude, longitude;
@@ -65,32 +62,6 @@ public class BoardPopupMap extends Activity implements
                 .build();
         mGoogleApiClient.connect();
     }
-
-
-    //GPS 활성화를 위한 다이얼로그의 결과 처리
-    /*@Override
-    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
-        super.onActivityResult (requestCode, resultCode, data);
-
-        switch (requestCode) {
-            case  REQUEST_CODE_GPS:
-                //Log.d(TAG,""+resultCode);
-                //if (resultCode == RESULT_OK)
-                //사용자가 GPS 활성 시켰는지 검사
-                if ( locationManager == null)
-                    locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-
-                if ( locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
-                {
-                    // GPS 가 ON으로 변경되었을 때의 처리.
-                    setGPS = true;
-
-                    mapFragment.getMapAsync(BoardPopupMap.this);
-                }
-                break;
-        }
-    }*/
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,17 +91,12 @@ public class BoardPopupMap extends Activity implements
                     break;
                 case R.id.btnMove:
                     setLocationChanged(latitude, longitude);
-                    Log.d(TAG, "############################"+longitude);
-                    Log.d(TAG, "############################"+latitude);
                     break;
                 case R.id.btnInputData:
                     Intent intent = new Intent();
                     intent.putExtra("longitude", longitude);
                     intent.putExtra("latitude", latitude);
                     intent.putExtra("address", address);
-                    Log.d(TAG, "############################"+longitude);
-                    Log.d(TAG, "############################"+latitude);
-                    Log.d(TAG, "############################"+address);
                     setResult(RESULT_OK, intent);
                     finish();
                     break;
@@ -141,7 +107,6 @@ public class BoardPopupMap extends Activity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
             if(resultCode==RESULT_OK){
                 LTN = data.getExtras().getString("LTN");
-                //Toast.makeText(getApplicationContext(), string, Toast.LENGTH_LONG).show();
                 String[] array = LTN.split(":");
                 address = array[2];
                 latitude = Double.parseDouble(array[4]);
@@ -152,102 +117,6 @@ public class BoardPopupMap extends Activity implements
                 TVlongitude.setText("Longitude: " + longitude);
             }
     }
-
-    /*public boolean checkLocationPermission()
-    {
-        Log.d( TAG, "checkLocationPermission");
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-                //퍼미션 요청을 위해 UI를 보여줘야 하는지 검사
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.ACCESS_FINE_LOCATION)) {
-                    // Show an expanation to the user *asynchronously* -- don't block
-                    // this thread waiting for the user's response! After the user
-                    // sees the explanation, try again to request the permission.
-
-                    //Prompt the user once explanation has been shown;
-                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_CODE_LOCATION);
-
-                } else
-                    //UI보여줄 필요 없이 요청
-                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_CODE_LOCATION);
-
-                return false;
-            } else {
-
-                Log.d( TAG, "checkLocationPermission"+"이미 퍼미션 획득한 경우");
-
-                if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) && !setGPS)
-                {
-                    Log.d(TAG, "checkLocationPermission Version >= M");
-                   // showGPSDisabledAlertToUser();
-                }
-
-                if (mGoogleApiClient == null) {
-                    Log.d( TAG, "checkLocationPermission "+"mGoogleApiClient==NULL");
-                    buildGoogleApiClient();
-                }
-                else  Log.d( TAG, "checkLocationPermission "+"mGoogleApiClient!=NULL");
-
-                if ( mGoogleApiClient.isConnected() ) Log.d( TAG, "checkLocationPermission"+"mGoogleApiClient 연결되 있음");
-                else Log.d( TAG, "checkLocationPermission"+"mGoogleApiClient 끊어져 있음");
-
-
-                mGoogleApiClient.reconnect();//이미 연결되 있는 경우이므로 다시 연결
-
-                googleMap.setMyLocationEnabled(true);
-            }
-        }
-        else {
-            if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) && !setGPS)
-            {
-                Log.d(TAG, "checkLocationPermission Version < M");
-                //showGPSDisabledAlertToUser();
-            }
-
-            if (mGoogleApiClient == null) {
-                buildGoogleApiClient();
-            }
-            googleMap.setMyLocationEnabled(true);
-        }
-
-        return true;
-    }*/
-
-    @Override
-    /*public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case REQUEST_CODE_LOCATION: {
-
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                {
-                    //퍼미션이 허가된 경우
-                    if ((ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                            || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED))
-                    {
-
-                        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) && !setGPS)
-                        {
-                            Log.d(TAG, "onRequestPermissionsResult");
-                            //showGPSDisabledAlertToUser();
-                        }
-
-
-                        if (mGoogleApiClient == null) {
-                            buildGoogleApiClient();
-                        }
-                        googleMap.setMyLocationEnabled(true);
-                    }
-                } else {
-                    Toast.makeText(this, "퍼미션 취소", Toast.LENGTH_LONG).show();
-                }
-                return;
-            }
-        }
-    }*/
 
     //@Override
     public void onMapReady(GoogleMap map)
@@ -264,25 +133,15 @@ public class BoardPopupMap extends Activity implements
             public void onMapLoaded() {
                 Log.d( TAG, "onMapLoaded" );
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                {
-                    //checkLocationPermission();
-                }
-                else
-                {
-
-                    if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) && !setGPS)
-                    {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {}
+                else {
+                    if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) && !setGPS) {
                         Log.d(TAG, "onMapLoaded");
-                      //  showGPSDisabledAlertToUser();
                     }
-
                     if (mGoogleApiClient == null) {
                         buildGoogleApiClient();
                     }
-                    //googleMap.setMyLocationEnabled(true);
                 }
-
             }
         });
 
@@ -320,7 +179,6 @@ public class BoardPopupMap extends Activity implements
             setGPS = true;
 
         mLocationRequest = new LocationRequest();
-        //mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
         mLocationRequest.setInterval(1000);
         mLocationRequest.setFastestInterval(1000);
@@ -331,9 +189,6 @@ public class BoardPopupMap extends Activity implements
 
             Log.d( TAG, "onConnected " + "getLocationAvailability mGoogleApiClient.isConnected()="+mGoogleApiClient.isConnected() );
             if ( !mGoogleApiClient.isConnected()  ) mGoogleApiClient.connect();
-
-
-            // LocationAvailability locationAvailability = LocationServices.FusedLocationApi.getLocationAvailability(mGoogleApiClient);
 
             if ( setGPS && mGoogleApiClient.isConnected() )//|| locationAvailability.isLocationAvailable() )
             {
@@ -354,11 +209,8 @@ public class BoardPopupMap extends Activity implements
                 googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                 googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
             }
-
         }
-
     }
-
 
     @Override
     public void onConnectionFailed(ConnectionResult result) {
@@ -395,7 +247,6 @@ public class BoardPopupMap extends Activity implements
         }
         super.onStop();
     }
-
 
     @Override
     public void onPause() {
@@ -486,9 +337,6 @@ public class BoardPopupMap extends Activity implements
         }
     }
     public void setLocationChanged(Double longitude, Double latitude) {
-
-        String errorMessage = "";
-
         googleMap.clear();
 
         //현재 위치에 마커 생성
@@ -503,5 +351,4 @@ public class BoardPopupMap extends Activity implements
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
         googleMap.getUiSettings().setCompassEnabled(true);
     }
-
 }

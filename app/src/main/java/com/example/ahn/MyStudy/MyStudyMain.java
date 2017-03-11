@@ -2,7 +2,6 @@ package com.example.ahn.MyStudy;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -21,7 +20,6 @@ import com.google.firebase.database.ValueEventListener;
  */
 
 public class MyStudyMain extends AppCompatActivity{
-    private String TAG="@@@";
     private String currentUserEmail;
     private String currentUserUid;
     private String data;
@@ -36,6 +34,7 @@ public class MyStudyMain extends AppCompatActivity{
 
         root = FirebaseDatabase.getInstance().getReference().child("group");
 
+        //현재 접속 User의 정보 가져오는 곳
         user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             currentUserEmail = user.getEmail();
@@ -49,31 +48,24 @@ public class MyStudyMain extends AppCompatActivity{
         root.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                //현재 Group 밑에 있는 Data 불러오는 곳
                 for (DataSnapshot studyData : dataSnapshot.getChildren()) {
                     data = studyData.getValue().toString();
                     data = data.replaceAll(",","=");
                     data = data.replaceAll(" ","");
                     data = data.replace("}","");
                     String[] confirmUser = data.split("=");
-                    /*studyTitleData = dataSnapshot.getValue().toString().replaceFirst("\\{","");
-                    studyTitleData = studyTitleData.replaceAll("\\}, ", "={");
-                    String[] myStudyTitle = studyTitleData.split("=\\{");*/
                     String[] myStudyTitle = studyData.getRef().toString().split("/");
-                    Log.d(TAG, "@@@@@@@@@@"+data+"@@@@@@@@@@@@"+confirmUser[1]);
-                    Log.d(TAG, "########"+studyData.getRef().toString());
-                    //Log.d(TAG, "@@@@@@@@@@"+dataSnapshot.getValue().toString());
                     for(int i=0; i<confirmUser.length;i++) {
                         if (confirmUser[i].equals(currentUserEmail)) {
-                            showMyStudyLishAdapter.add(myStudyTitle[4]);
+                            showMyStudyLishAdapter.add(myStudyTitle[4]); // myStudyTitle[4] = UserEmail
                             showMyStudyLishAdapter.notifyDataSetChanged();
                         }
                     }
                 }
             }
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
+            public void onCancelled(DatabaseError databaseError) {}
         });
     }
 
