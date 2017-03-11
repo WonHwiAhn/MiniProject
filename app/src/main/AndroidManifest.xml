@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.ahn.studyviewer">
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,6 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <!--android:theme="@style/Theme.AppCompat.NoActionBar"> 액션바 없애는 테마-->
+
         <activity android:name=".MainActivity"
                   android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -24,13 +29,38 @@
 
         <activity android:name=".SignUp" />
 
+        <!--Classes of StudyBoard Package-->
+
         <activity android:name="com.example.ahn.StudyBoard.BoardMain"
                   android:theme="@style/AppTheme.NoActionBar"/>
 
-        <activity android:name="com.example.ahn.StudyBoard.BoardPopupActivity"
-                  android:theme="@android:style/Theme.Dialog" />
-
         <activity android:name="com.example.ahn.StudyBoard.BoardMake"
                   android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity android:name="com.example.ahn.StudyBoard.BoardPopupMap"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity android:name="com.example.ahn.StudyBoard.BoardPopupActivity"
+            android:theme="@android:style/Theme.Dialog" />
+
+        <activity android:name="com.example.ahn.StudyBoard.BoardPopupLtn"
+            android:theme="@android:style/Theme.Dialog" />
+
+        <activity android:name="com.example.ahn.StudyBoard.BoardConfirm"
+                  android:theme="@style/AppTheme.NoActionBar" />
+
+        <!--Classes of MyStudy Package-->
+
+        <activity android:name="com.example.ahn.MyStudy.MyStudyMain"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <!--google map API-->
+        <uses-library android:name="com.google.android.maps" />
+
+        <!--google map private key-->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyA1dAvUVX57vtYk-AICBZDBwCcTNPEpJh8" />
     </application>
+
 </manifest>

@@ -12,10 +12,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.ahn.studyviewer.R;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -29,21 +35,24 @@ import static com.example.ahn.studyviewer.R.id.fab;
 
 public class BoardMain extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
-    BoardMainAdapter boardMainAdapter;
-    ArrayList<BoardMainData> boardMainData = new ArrayList<>();
+    //BoardMainAdapter boardMainAdapter;
+    ArrayAdapter<String> boardMainAdapter;
+    ArrayList<String> boardMainData = new ArrayList<>();
+    DatabaseReference root;
+    int count = 0;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.board_main);
 
-        DatabaseReference root = FirebaseDatabase.getInstance().getReference().child("study"); //디비 루트 설정 (채팅 방 밑 노드)
+        root = FirebaseDatabase.getInstance().getReference().child("study"); //디비 루트 설정 (채팅 방 밑 노드)
 
         setTitle("스터디 모집 게시판");  //타이틀 바 제목 수정
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);  //board_app_bar_main에 있음(상태바)
         setSupportActionBar(toolbar);
 
-        /*********************************편지모양 튼 부분*****************************/
+        /*********************************스터디 추가 버튼 눌렀을 때 부분*****************************/
         Button addStudy = (Button) findViewById(fab); //board_app_bar_main에 있음(편지모양 버튼)
 
         addStudy.setOnClickListener(new View.OnClickListener() {
@@ -55,8 +64,9 @@ public class BoardMain extends AppCompatActivity implements NavigationView.OnNav
                 startActivityForResult(intent, 1);
             }
         });
-
         /************************************************************************************/
+
+
 
         /**********************레이아웃에 토글을 삽입하기 위한 부분***************************/
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout); //board_main에 있음 (전체 레이아웃)
@@ -71,9 +81,42 @@ public class BoardMain extends AppCompatActivity implements NavigationView.OnNav
         /**************************************************************************************/
 
         /*********************보드 제목 리스트 부분******************************************/
-        ListView boardList = (ListView) findViewById(R.id.boardList);
-
+        final ListView boardList = (ListView) findViewById(R.id.boardList);
+        boardMainAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, boardMainData);
+        boardList.setAdapter(boardMainAdapter);
         /************************************************************************************/
+        root.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
+                BoardMainData newPost = dataSnapshot.getValue(BoardMainData.class);
+
+                boardMainData.add(count+"  "+ newPost.getStudyTitle());
+                boardMainAdapter.notifyDataSetChanged();
+                count++;
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {}
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {}
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+
+        boardList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            public void onItemClick(AdapterView<?> parentView, View clickedView, int position, long id)
+            {
+                Intent intent = new Intent(getApplicationContext(), BoardConfirm.class);
+                intent.putExtra("studyTitle", boardMainData.get(position).toString());
+                Toast.makeText(getApplicationContext(), boardMainData.get(position).toString(), Toast.LENGTH_LONG).show();
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

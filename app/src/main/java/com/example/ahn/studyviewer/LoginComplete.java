@@ -109,13 +109,8 @@ public class LoginComplete extends AppCompatActivity implements NavigationView.O
         auth = FirebaseAuth.getInstance();
 
         /***********스터디 모집 게시판 부분************/
-        studyRecruitBoardbtn = (Button) findViewById(R.id.btn2);
-        studyRecruitBoardbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(LoginComplete.this, com.example.ahn.StudyBoard.BoardMain.class));
-            }
-        });
+        findViewById(R.id.btn1).setOnClickListener(bListener);
+        findViewById(R.id.btn2).setOnClickListener(bListener);
         /**********************************************/
 
         /*****************************슬라이딩 패널부분 ****************************/
@@ -147,50 +142,26 @@ public class LoginComplete extends AppCompatActivity implements NavigationView.O
         });*/
         /***************************************************************************/
         name = auth.getCurrentUser().getEmail();
-        /****************************nav창 처리 부분*******************************/
-        //navTView01 = ;
-        //navTView02 = (TextView) findViewById(R.id.navTView02);
-
-        //navTView01.setText(auth.getCurrentUser().getUid());
-        //navTView02.setText(auth.getCurrentUser().getEmail());
-        /**************************************************************************/
-
-
-        /****************************수정한 부분*********************************/
-
-
-        //request_user_name();
-
-
-
-        /*root.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });*/
-
-        /*listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(getApplicationContext(), Chat_Room.class);
-                intent.putExtra("room_name", ((TextView)view).getText().toString());
-                intent.putExtra("user_name", name);
-                intent.putExtra("intro", name+"님이 입장하셨습니다.");
-                startActivity(intent);
-            }
-        });*/
-        /**************************************************************************************/
 
         if(auth.getCurrentUser() != null)
             txtWelcome.setText("Welcome!!\n" + auth.getCurrentUser().getEmail());
     }
 
+    Button.OnClickListener bListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()){
+                case R.id.btn1:
+                    startActivity(new Intent(LoginComplete.this, com.example.ahn.MyStudy.MyStudyMain.class));
+                    break;
+                case R.id.btn2:
+                    startActivity(new Intent(LoginComplete.this, com.example.ahn.StudyBoard.BoardMain.class));
+                    break;
+                case R.id.btn3:
+                    break;
+            }
+        }
+    };
 
     Button.OnClickListener listener = new View.OnClickListener() {
         @Override
@@ -198,42 +169,12 @@ public class LoginComplete extends AppCompatActivity implements NavigationView.O
             //if(view.getId() == R.id.dashboard_btn_change_pass){
             // changePassword(input_new_password.getText().toString());
             // }else if(view.getId() == R.id.dashboard_btn_logout){
-
-
-
             if(view.getId() == R.id.dashboard_btn_logout){
                 logoutUser();
             }
         }
     };
 
-    /* 수정시작
-
-    private void request_user_name(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Enter name: ");
-
-        final EditText input_field = new EditText(this);
-
-        builder.setView(input_field);
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                name = input_field.getText().toString();
-            }
-        });
-
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.cancel();
-                request_user_name();
-            }
-        });
-
-        builder.show();
-    }
-     */
     private void logoutUser(){
         auth.signOut();
         if(auth.getCurrentUser() == null){
@@ -249,20 +190,6 @@ public class LoginComplete extends AppCompatActivity implements NavigationView.O
             menu1.setVisibility(View.VISIBLE);
         }
     }
-/*
-    private void changePassword(String newPassword){
-        FirebaseUser user = auth.getCurrentUser();
-        user.updatePassword(newPassword).addOnCompleteListener(this, new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()){
-                    Snackbar snackbar = Snackbar.make(activity_dashboard, "Password changed", Snackbar.LENGTH_SHORT);
-                    snackbar.show();
-                }
-            }
-        });
-    }*/
-
 
     @Override
     public void onBackPressed() {
